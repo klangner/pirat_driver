@@ -89,22 +89,19 @@ void command(char val)
 {
   switch(val)
   {
-      case 'w'://Move Forward
+      case 'f'://Move Forward
         forward();   //move forward in max speed
         break;
-      case 's'://Move Backward
+      case 'b'://Move Backward
         backward();   //move back in max speed
         break;
-      case 'a'://Turn Left
+      case 'l'://Turn Left
         turnLeft();
         break;      
-      case 'd'://Turn Right
+      case 'r'://Turn Right
         turnRight();
         break;
-      case 'z':
-        Serial.println("Hello");
-        break;
-      case 'x':
+      case 's':
         stop();
         break;
   }
