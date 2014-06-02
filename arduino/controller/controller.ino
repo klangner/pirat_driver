@@ -16,15 +16,15 @@ void setup()
 
 void loop()
 {
-    char recvChar;
-    while(1)
-    {
-        if(blueToothSerial.available())
-        {//check if there's any data sent from the remote bluetooth shield
-            recvChar = blueToothSerial.read();
-            Serial.print(recvChar);
-            command(recvChar);
-        }
+    String cmd = "";
+    while(blueToothSerial.available()){
+      char recvChar = blueToothSerial.read();
+      cmd += recvChar;
+    }
+    
+    if(cmd.length() > 0){
+      Serial.print(cmd);
+      runCommand(cmd);
     }
 }
 
@@ -40,6 +40,22 @@ void setupBlueToothConnection()
     Serial.println("The slave bluetooth is inquirable!");
     delay(2000); // This delay is required.
     blueToothSerial.flush();
+}
+
+
+void runCommand(String cmd)
+{
+    if(cmd.startsWith("f")){
+        forward();   //move forward in max speed
+    } else if(cmd.startsWith("b")){
+        backward();   //move back in max speed
+    } else if(cmd.startsWith("l")){
+        turnLeft();
+    } else if(cmd.startsWith("r")){
+        turnRight();
+    } else if(cmd.startsWith("s")){
+        stop();
+    }
 }
 
 //Standard PWM DC control
@@ -85,24 +101,4 @@ void turnRight()             //Turn Right
   digitalWrite(M2,LOW);
 }
 
-void command(char val)
-{
-  switch(val)
-  {
-      case 'f'://Move Forward
-        forward();   //move forward in max speed
-        break;
-      case 'b'://Move Backward
-        backward();   //move back in max speed
-        break;
-      case 'l'://Turn Left
-        turnLeft();
-        break;      
-      case 'r'://Turn Right
-        turnRight();
-        break;
-      case 's':
-        stop();
-        break;
-  }
-}
+
