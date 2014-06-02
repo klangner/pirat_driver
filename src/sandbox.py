@@ -5,14 +5,20 @@ Created on Jun 1, 2014
 '''
 
 import bluetooth
+import time
 
-target_name = "MyRover"
-target_address = None
 
-nearby_devices = bluetooth.discover_devices()
+ROVER_NAME = "MyRover"
+ROVER_ADDRESS = "00:18:E4:0C:68:09"
+PORT = 1
 
-for bdaddr in nearby_devices:
-    if target_name == bluetooth.lookup_name( bdaddr ):
-        print "found %s device with address: %s " % (target_name, bdaddr)
+sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+sock.connect((ROVER_ADDRESS, PORT))
+print 'Connected'
+sock.settimeout(1.0)
+print 'Sent forward behavior'
+sock.send("f")
+time.sleep(4)
+sock.send("s")
 
-print "Done"
+sock.close()
