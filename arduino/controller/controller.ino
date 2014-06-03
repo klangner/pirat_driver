@@ -3,7 +3,16 @@
 #define RxD 2
 #define TxD 3
 
+//Standard PWM DC control
+int E1 = 5;     //M1 Speed Control
+int E2 = 6;     //M2 Speed Control
+int M1 = 4;    //M1 Direction Control
+int M2 = 7;    //M1 Direction Control
+int MAX_SPEED = 255;
+
+// Bluetooth connection
 SoftwareSerial blueToothSerial(RxD,TxD);
+
 
 void setup()
 {
@@ -46,58 +55,59 @@ void setupBlueToothConnection()
 void runCommand(String cmd)
 {
     if(cmd.startsWith("f")){
-        forward();   //move forward in max speed
+        forward(MAX_SPEED); 
     } else if(cmd.startsWith("b")){
-        backward();   //move back in max speed
+        backward(MAX_SPEED);   
     } else if(cmd.startsWith("l")){
-        turnLeft();
+        turnLeft(MAX_SPEED);
     } else if(cmd.startsWith("r")){
-        turnRight();
+        turnRight(MAX_SPEED);
     } else if(cmd.startsWith("s")){
         stop();
     }
 }
 
-//Standard PWM DC control
-int E1 = 5;     //M1 Speed Control
-int E2 = 6;     //M2 Speed Control
-int M1 = 4;    //M1 Direction Control
-int M2 = 7;    //M1 Direction Control
-int MAX_SPEED = 255;
  
- 
- 
-void stop(void)                    //Stop
+// Stop 
+void stop(void)               
 {
   digitalWrite(E1,LOW);  
   digitalWrite(E2,LOW);     
 }  
-void forward()          //Move forward
+
+// Move forward with speed in m/s
+void forward(int speed)
 {
-  analogWrite (E1,MAX_SPEED);      //PWM Speed Control
+  analogWrite (E1,speed);
   digitalWrite(M1,HIGH);   
-  analogWrite (E2,MAX_SPEED);   
+  analogWrite (E2,speed);   
   digitalWrite(M2,HIGH);
 } 
-void backward()          //Move backward
+
+// Move backward with speed in m/s
+void backward(int speed)
 {
-  analogWrite (E1,MAX_SPEED);
+  analogWrite (E1,speed);
   digitalWrite(M1,LOW);  
-  analogWrite (E2,MAX_SPEED);   
+  analogWrite (E2,speed);   
   digitalWrite(M2,LOW);
 }
-void turnLeft()             //Turn Left
+
+// Turn left with given angular speed
+void turnLeft(int speed)
 {
-  analogWrite (E1,MAX_SPEED);
+  analogWrite (E1,speed);
   digitalWrite(M1,LOW);   
-  analogWrite (E2,MAX_SPEED);   
+  analogWrite (E2,speed);   
   digitalWrite(M2,HIGH);
 }
-void turnRight()             //Turn Right
+
+// Turn right with given angular speed
+void turnRight(int speed)
 {
-  analogWrite (E1,MAX_SPEED);
+  analogWrite (E1,speed);
   digitalWrite(M1,HIGH);   
-  analogWrite (E2,MAX_SPEED);   
+  analogWrite (E2,speed);   
   digitalWrite(M2,LOW);
 }
 
