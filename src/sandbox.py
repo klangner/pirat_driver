@@ -16,9 +16,10 @@ sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((ROVER_ADDRESS, PORT))
 print 'Connected'
 sock.settimeout(1.0)
-print 'Sent forward behavior'
-sock.send("f")
+print "forward command"
+sock.send("forward\n")
 time.sleep(4)
-sock.send("s")
+print "stop command"
+sock.send("stop\n")
 
 sock.close()
